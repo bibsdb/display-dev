@@ -9,6 +9,3 @@ services:
       # Have the http router redirect to https, the middleware is defined in static.yml
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=redirect-to-https@file"
 
-  cypress:
-    profiles:
-      - "disabled"

@@ -20,13 +20,14 @@ tasks:
       # Unmodified repo os2display repos
       # We do also have forks of some of these in github.com/kkos2display but
       # they are not currently in use with the exception of display-templates.
-      - test -d display-api-service || git clone git@github.com:os2display/display-api-service.git
-      - test -d display-admin-client || git clone git@github.com:os2display/display-admin-client.git
-      - test -d display-client || git clone git@github.com:os2display/display-client.git
+      - test -d display-api-service || git clone https://github.com/os2display/display-api-service.git
+      - test -d display-admin-client || git clone https://github.com/os2display/display-admin-client.git
+      - test -d display-client || git clone https://github.com/os2display/display-client.git
+      - test -d display-templates || git clone https://github.com/os2display/display-templates.git
       # Fork to include additional templates with the goal of eventual upstreaming.
-      - test -d display-templates || git clone git@github.com:kkos2/display-templates
+      # - test -d display-templates || git clone git@github.com:kkos2/display-templates
       # KK Specific repository for automated integration.
-      - test -d display-kk-integration || git clone git@github.com:kkos2/kk-display-integration.git
+      # - test -d display-kk-integration || git clone git@github.com:kkos2/kk-display-integration.git
 
   git:reset:all:
     desc: Reset projects to upstream develop. This will DESTROY any local changes.
@@ -36,24 +37,17 @@ tasks:
     cmds:
       - cd display-api-service
         && git reset --hard
-        && git checkout develop
-        && git pull
+        && git checkout tags/1.1.0
       - cd display-templates
         && git reset --hard
-        && git checkout kk-develop
-        && git pull
+        && git checkout tags/1.0.2
       - cd display-admin-client
         && git reset --hard
-        && git checkout develop
-        && git pull
+        && git checkout tags/1.1.0
       - cd display-client
         && git reset --hard
-        && git checkout develop
-        && git pull
-      - cd display-kk-integration
-        && git reset --hard
-        && git checkout main
-        && git pull
+        && git checkout tags/1.2.0
+    
 
   git:status:all:
     desc: "Do a git status on all projects"
@@ -65,7 +59,7 @@ tasks:
       - cd display-admin-client && git status
       - cd display-client && git status
       - cd display-templates && git status
-      - cd display-kk-integration && git status
+    # - cd display-kk-integration && git status
 
   integration:start:dev:
     desc: Start a local instances of the integration poc server
@@ -199,32 +193,28 @@ tasks:
     cmds:
       # The screen-layouts seems to have disappeared with https://github.com/os2display/display-templates/pull/76
       # Until we know where to pull the layouts from we fall back to a commit prior to the change.
-      - docker compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/src/screen-layouts/full-screen.json
-      - docker compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/src/screen-layouts/six-areas.json
-      - docker compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/src/screen-layouts/three-boxes-horizontal.json
-      - docker compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/src/screen-layouts/three-boxes.json
-      - docker compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/src/screen-layouts/touch-template.json
-      - docker compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/src/screen-layouts/two-boxes-vertical.json
-      - docker compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/src/screen-layouts/two-boxes.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/book-byen-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/book-review-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/calendar-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/contacts-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/event-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/event-list-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/event-theme-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/iframe-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/image-text-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/instagram-feed-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/kk-slideshow-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/poster-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/rss-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/service-message-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/slideshow-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/table-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/travel-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/twenty-three-video-config-develop.json
-      - docker compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/kkos2/display-templates/kk-develop/build/video-config-develop.json
+      # app:template:load
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/book-review-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/calendar-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/contacts-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/iframe-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/image-text-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/instagram-feed-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/poster-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/rss-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/slideshow-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/table-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/travel-config-develop.json
+      - docker-compose exec phpfpm bin/console app:template:load https://raw.githubusercontent.com/os2display/display-templates/develop/build/video-config-develop.json
+
+      # app:screen-layouts:load
+      - docker-compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/os2display/display-templates/develop/src/screen-layouts/full-screen.json
+      - docker-compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/os2display/display-templates/develop/src/screen-layouts/three-boxes-horizontal.json
+      - docker-compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/os2display/display-templates/develop/src/screen-layouts/three-boxes.json
+      - docker-compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/os2display/display-templates/develop/src/screen-layouts/touch-template.json
+      - docker-compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/os2display/display-templates/develop/src/screen-layouts/two-boxes.json
+      - docker-compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/os2display/display-templates/develop/src/screen-layouts/two-boxes-vertical.json
+      - docker-compose exec phpfpm bin/console app:screen-layouts:load https://raw.githubusercontent.com/os2display/display-templates/develop/src/screen-layouts/six-areas.json
 
   api:down:
     desc: "Bring the display api project down and delete volumes"
@@ -334,6 +324,7 @@ tasks:
       - task: api:down
       - task: admin:down
       - task: display:down
+      - task: templates:down
 
   diagrams:render:
     desc: Render all diagrams
