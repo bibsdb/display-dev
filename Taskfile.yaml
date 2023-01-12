@@ -29,7 +29,7 @@ tasks:
       # KK Specific repository for automated integration.
       # - test -d display-kk-integration || git clone git@github.com:kkos2/kk-display-integration.git
 
-  git:reset:all:
+git:reset:all:
     desc: Reset projects to upstream develop. This will DESTROY any local changes.
     dir: projects
     deps:
@@ -37,16 +37,24 @@ tasks:
     cmds:
       - cd display-api-service
         && git reset --hard
-        && git checkout tags/1.1.0
+        && git checkout develop
+        && git pull
       - cd display-templates
         && git reset --hard
-        && git checkout tags/1.0.2
+        && git checkout kk-develop
+        && git pull
       - cd display-admin-client
         && git reset --hard
-        && git checkout tags/1.1.0
+        && git checkout develop
+        && git pull
       - cd display-client
         && git reset --hard
-        && git checkout tags/1.2.0
+        && git checkout develop
+        && git pull
+      - cd display-kk-integration
+        && git reset --hard
+        && git checkout main
+        && git pull
     
 
   git:status:all:
